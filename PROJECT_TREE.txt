@@ -1,0 +1,357 @@
+hire-mind-backend/
+│
+├── .github/
+│   ├── workflows/
+│   │   ├── ci.yml
+│   │   ├── cd.yml
+│   │   └── test.yml
+│   └── PULL_REQUEST_TEMPLATE.md
+│
+├── .husky/
+│   ├── pre-commit
+│   ├── pre-push
+│   └── commit-msg
+│
+├── docker/
+│   ├── Dockerfile
+│   ├── Dockerfile.dev
+│   ├── Dockerfile.prod
+│   ├── docker-compose.yml
+│   ├── docker-compose.dev.yml
+│   ├── docker-compose.prod.yml
+│   ├── nginx.conf
+│   └── .dockerignore
+│
+├── docs/
+│   ├── api/
+│   │   ├── openapi.yaml
+│   │   ├── swagger.json
+│   │   └── postman-collection.json
+│   ├── architecture/
+│   │   ├── system-design.md
+│   │   ├── database-schema.md
+│   │   └── api-guidelines.md
+│   ├── deployment/
+│   │   ├── aws.md
+│   │   ├── docker.md
+│   │   └── kubernetes.md
+│   └── README.md
+│
+├── logs/
+│   └── .gitkeep
+│
+├── scripts/
+│   ├── seed.ts
+│   ├── migrate.ts
+│   ├── reset-db.ts
+│   ├── generate-migration.ts
+│   ├── backup-db.ts
+│   └── start-dev.ts
+│
+├── src/
+│   ├── config/
+│   │   ├── app.config.ts
+│   │   ├── database.config.ts
+│   │   ├── redis.config.ts
+│   │   ├── jwt.config.ts
+│   │   ├── oauth.config.ts
+│   │   ├── aws.config.ts
+│   │   ├── email.config.ts
+│   │   ├── cors.config.ts
+│   │   ├── logger.config.ts
+│   │   └── index.ts
+│   │
+│   ├── database/
+│   │   ├── schema/
+│   │   │   └── index.ts
+│   │   ├── relations/
+│   │   │   └── index.ts
+│   │   ├── migrations/
+│   │   │   ├── meta/
+│   │   │   └── README.md
+│   │   ├── seeds/
+│   │   │   ├── factories/
+│   │   │   └── index.ts
+│   │   ├── client.ts
+│   │   └── index.ts
+│   │
+│   ├── modules/
+│   │   ├── auth/
+│   │   │   ├── strategies/
+│   │   │   │   ├── local.strategy.ts
+│   │   │   │   ├── google.strategy.ts
+│   │   │   │   ├── github.strategy.ts
+│   │   │   │   ├── jwt.strategy.ts
+│   │   │   │   └── refresh.strategy.ts
+│   │   │   ├── guards/
+│   │   │   │   ├── auth.guard.ts
+│   │   │   │   ├── role.guard.ts
+│   │   │   │   └── permission.guard.ts
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.service.ts
+│   │   │   ├── auth.repository.ts
+│   │   │   ├── auth.routes.ts
+│   │   │   ├── auth.schema.ts
+│   │   │   ├── auth.validation.ts
+│   │   │   ├── auth.mapper.ts
+│   │   │   ├── auth.types.ts
+│   │   │   ├── auth.constants.ts
+│   │   │   ├── auth.hooks.ts
+│   │   │   ├── auth.utils.ts
+│   │   │   ├── auth.errors.ts
+│   │   │   ├── auth.docs.ts
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── users/
+│   │   │   ├── users.controller.ts
+│   │   │   ├── users.service.ts
+│   │   │   ├── users.repository.ts
+│   │   │   ├── users.routes.ts
+│   │   │   ├── users.schema.ts
+│   │   │   ├── users.validation.ts
+│   │   │   ├── users.mapper.ts
+│   │   │   ├── users.types.ts
+│   │   │   ├── users.constants.ts
+│   │   │   ├── users.hooks.ts
+│   │   │   ├── users.utils.ts
+│   │   │   ├── users.errors.ts
+│   │   │   ├── users.docs.ts
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── profiles/
+│   │   │   └── [14 standard module files]
+│   │   │
+│   │   ├── resumes/
+│   │   │   ├── parser/
+│   │   │   │   ├── pdf.parser.ts
+│   │   │   │   ├── docx.parser.ts
+│   │   │   │   └── text-extractor.ts
+│   │   │   └── [14 standard module files]
+│   │   │
+│   │   ├── companies/
+│   │   │   └── [14 standard module files]
+│   │   │
+│   │   ├── jobs/
+│   │   │   ├── search/
+│   │   │   │   ├── search.service.ts
+│   │   │   │   ├── filters.service.ts
+│   │   │   │   └── indexer.service.ts
+│   │   │   └── [14 standard module files]
+│   │   │
+│   │   ├── applications/
+│   │   │   └── [14 standard module files]
+│   │   │
+│   │   ├── notifications/
+│   │   │   └── [14 standard module files]
+│   │   │
+│   │   ├── uploads/
+│   │   │   └── [14 standard module files]
+│   │   │
+│   │   ├── emails/
+│   │   │   ├── templates/
+│   │   │   │   ├── welcome.template.ts
+│   │   │   │   ├── reset-password.template.ts
+│   │   │   │   ├── verify-email.template.ts
+│   │   │   │   ├── job-alert.template.ts
+│   │   │   │   └── application-status.template.ts
+│   │   │   └── [14 standard module files]
+│   │   │
+│   │   └── health/
+│   │       ├── checks/
+│   │       │   ├── database.check.ts
+│   │       │   ├── redis.check.ts
+│   │       │   ├── s3.check.ts
+│   │       │   └── index.ts
+│   │       ├── health.controller.ts
+│   │       ├── health.service.ts
+│   │       ├── health.routes.ts
+│   │       ├── health.types.ts
+│   │       └── index.ts
+│   │
+│   ├── shared/
+│   │   ├── constants/
+│   │   │   ├── app.constants.ts
+│   │   │   ├── error-codes.constants.ts
+│   │   │   ├── status-codes.constants.ts
+│   │   │   ├── roles.constants.ts
+│   │   │   ├── permissions.constants.ts
+│   │   │   └── index.ts
+│   │   ├── enums/
+│   │   │   ├── user-role.enum.ts
+│   │   │   ├── application-status.enum.ts
+│   │   │   ├── job-type.enum.ts
+│   │   │   ├── employment-type.enum.ts
+│   │   │   ├── notification-type.enum.ts
+│   │   │   └── index.ts
+│   │   ├── interfaces/
+│   │   │   ├── base.interface.ts
+│   │   │   ├── repository.interface.ts
+│   │   │   ├── service.interface.ts
+│   │   │   ├── controller.interface.ts
+│   │   │   ├── pagination.interface.ts
+│   │   │   ├── response.interface.ts
+│   │   │   └── index.ts
+│   │   ├── types/
+│   │   │   ├── request.types.ts
+│   │   │   ├── response.types.ts
+│   │   │   ├── auth.types.ts
+│   │   │   ├── pagination.types.ts
+│   │   │   ├── query.types.ts
+│   │   │   └── index.ts
+│   │   ├── validators/
+│   │   │   ├── common.validator.ts
+│   │   │   ├── email.validator.ts
+│   │   │   ├── uuid.validator.ts
+│   │   │   ├── pagination.validator.ts
+│   │   │   └── index.ts
+│   │   ├── helpers/
+│   │   │   ├── password.helper.ts
+│   │   │   ├── date.helper.ts
+│   │   │   ├── string.helper.ts
+│   │   │   ├── array.helper.ts
+│   │   │   ├── object.helper.ts
+│   │   │   └── index.ts
+│   │   ├── utils/
+│   │   │   ├── pagination.util.ts
+│   │   │   ├── query-builder.util.ts
+│   │   │   ├── file.util.ts
+│   │   │   ├── crypto.util.ts
+│   │   │   ├── slug.util.ts
+│   │   │   └── index.ts
+│   │   ├── decorators/
+│   │   │   ├── roles.decorator.ts
+│   │   │   ├── permissions.decorator.ts
+│   │   │   ├── validate.decorator.ts
+│   │   │   ├── cache.decorator.ts
+│   │   │   └── index.ts
+│   │   ├── exceptions/
+│   │   │   ├── base.exception.ts
+│   │   │   ├── validation.exception.ts
+│   │   │   ├── not-found.exception.ts
+│   │   │   ├── unauthorized.exception.ts
+│   │   │   ├── forbidden.exception.ts
+│   │   │   ├── conflict.exception.ts
+│   │   │   └── index.ts
+│   │   ├── responses/
+│   │   │   ├── success.response.ts
+│   │   │   ├── error.response.ts
+│   │   │   ├── pagination.response.ts
+│   │   │   ├── response-builder.ts
+│   │   │   └── index.ts
+│   │   └── index.ts
+│   │
+│   ├── services/
+│   │   ├── jwt.service.ts
+│   │   ├── hash.service.ts
+│   │   ├── redis.service.ts
+│   │   ├── email.service.ts
+│   │   ├── oauth.service.ts
+│   │   ├── s3.service.ts
+│   │   ├── upload.service.ts
+│   │   ├── storage.service.ts
+│   │   ├── pagination.service.ts
+│   │   ├── search.service.ts
+│   │   └── index.ts
+│   │
+│   ├── middleware/
+│   │   ├── auth.middleware.ts
+│   │   ├── role.middleware.ts
+│   │   ├── validation.middleware.ts
+│   │   ├── logger.middleware.ts
+│   │   ├── error.middleware.ts
+│   │   ├── upload.middleware.ts
+│   │   ├── rate-limit.middleware.ts
+│   │   ├── cors.middleware.ts
+│   │   ├── request-context.middleware.ts
+│   │   └── index.ts
+│   │
+│   ├── plugins/
+│   │   ├── jwt.plugin.ts
+│   │   ├── redis.plugin.ts
+│   │   ├── multipart.plugin.ts
+│   │   ├── cookie.plugin.ts
+│   │   ├── swagger.plugin.ts
+│   │   ├── helmet.plugin.ts
+│   │   ├── rate-limit.plugin.ts
+│   │   ├── oauth.plugin.ts
+│   │   ├── cors.plugin.ts
+│   │   ├── sensible.plugin.ts
+│   │   └── index.ts
+│   │
+│   ├── routes/
+│   │   ├── v1/
+│   │   │   └── index.ts
+│   │   └── index.ts
+│   │
+│   ├── logger/
+│   │   ├── logger.ts
+│   │   ├── logger.config.ts
+│   │   ├── logger.utils.ts
+│   │   └── index.ts
+│   │
+│   ├── app.ts
+│   ├── server.ts
+│   └── index.ts
+│
+├── tests/
+│   ├── unit/
+│   │   ├── auth/
+│   │   │   └── auth.service.test.ts
+│   │   ├── users/
+│   │   ├── jobs/
+│   │   └── shared/
+│   ├── integration/
+│   │   ├── auth/
+│   │   │   └── login.test.ts
+│   │   ├── users/
+│   │   ├── jobs/
+│   │   └── applications/
+│   ├── e2e/
+│   │   └── auth.e2e.test.ts
+│   ├── fixtures/
+│   │   ├── users.fixture.ts
+│   │   ├── companies.fixture.ts
+│   │   ├── jobs.fixture.ts
+│   │   └── applications.fixture.ts
+│   ├── factories/
+│   │   ├── user.factory.ts
+│   │   ├── company.factory.ts
+│   │   ├── job.factory.ts
+│   │   └── application.factory.ts
+│   ├── mocks/
+│   │   ├── database.mock.ts
+│   │   ├── redis.mock.ts
+│   │   ├── s3.mock.ts
+│   │   ├── email.mock.ts
+│   │   └── jwt.mock.ts
+│   ├── helpers/
+│   │   ├── test-server.ts
+│   │   ├── test-database.ts
+│   │   ├── test-utils.ts
+│   │   └── index.ts
+│   └── setup.ts
+│
+├── uploads/
+│   ├── resumes/
+│   │   └── .gitkeep
+│   ├── avatars/
+│   │   └── .gitkeep
+│   └── company-logos/
+│       └── .gitkeep
+│
+├── .env.example
+├── .gitignore
+├── .prettierignore
+├── .prettierrc
+├── BACKEND_ARCHITECTURE.md
+├── CHANGELOG.md
+├── drizzle.config.ts
+├── eslint.config.js
+├── FOLDER_STRUCTURE.md
+├── LICENSE
+├── package.json
+├── PROJECT_TREE.txt
+├── QUICK_REFERENCE.md
+├── README.md
+├── tsconfig.json
+└── vitest.config.ts
