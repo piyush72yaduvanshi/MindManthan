@@ -45,8 +45,7 @@ uploads/**/*
 # Temporary files
 tmp/
 temp/
-BACKEND_ARCHITECTURE.md
-GETTING_STARTED.md
+doc
 
 # Database
 *.db

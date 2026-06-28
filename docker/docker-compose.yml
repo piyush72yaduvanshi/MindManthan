@@ -1,0 +1,165 @@
+# ============================================
+# Hire Mind - Docker Compose Configuration
+# ============================================
+# 
+# Services:
+# - postgres: PostgreSQL database
+# - redis: Redis cache (optional, uncomment when needed)
+# - pgadmin: PostgreSQL admin UI (optional)
+# 
+# Usage:
+#   Start all: docker-compose -f docker/docker-compose.yml up -d
+#   Start specific: docker-compose -f docker/docker-compose.yml up -d postgres
+#   Stop all: docker-compose -f docker/docker-compose.yml down
+#   View logs: docker-compose -f docker/docker-compose.yml logs -f
+#   View logs for service: docker-compose -f docker/docker-compose.yml logs -f postgres
+# ============================================
+
+version: '3.8'
+
+services:
+  # ==========================================
+  # PostgreSQL Database
+  # ==========================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: hiremind-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: piyush73
+      POSTGRES_DB: practice
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d  # For initialization scripts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d practice"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - hiremind-network
+
+  # ==========================================
+  # Redis Cache (Uncomment when needed)
+  # ==========================================
+  redis:
+    image: redis:7-alpine
+    container_name: hiremind-redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD:-}
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+      --appendonly yes
+      --appendfilename "appendonly.aof"
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    networks:
+      - hiremind-network
+
+  # ==========================================
+  # PgAdmin (PostgreSQL Web UI) - Optional
+  # Uncomment when needed for database management
+  # Access: http://localhost:5050
+  # ==========================================
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: hiremind-pgadmin
+  #   restart: unless-stopped
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@hiremind.com}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin123}
+  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
+  #     PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+  #   ports:
+  #     - "${PGADMIN_PORT:-5050}:80"
+  #   volumes:
+  #     - pgadmin_data:/var/lib/pgadmin
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   networks:
+  #     - hiremind-network
+
+  # ==========================================
+  # Redis Commander (Redis Web UI) - Optional
+  # Uncomment when needed for Redis management
+  # Access: http://localhost:8081
+  # ==========================================
+  # redis-commander:
+  #   image: rediscommander/redis-commander:latest
+  #   container_name: hiremind-redis-commander
+  #   restart: unless-stopped
+  #   environment:
+  #     REDIS_HOSTS: local:redis:6379
+  #     REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+  #   ports:
+  #     - "${REDIS_COMMANDER_PORT:-8081}:8081"
+  #   depends_on:
+  #     redis:
+  #       condition: service_healthy
+  #   networks:
+  #     - hiremind-network
+
+  # ==========================================
+  # Mailpit (Email Testing) - For Local Development
+  # Modern email testing tool with better UI
+  # SMTP: localhost:1025
+  # Web UI: http://localhost:8025
+  # ==========================================
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: hiremind-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"  # SMTP server
+      - "8025:8025"  # Web UI
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8025/api/v1/info"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - hiremind-network
+
+# ==========================================
+# Volumes
+# ==========================================
+volumes:
+  postgres_data:
+    driver: local
+    name: hiremind-postgres-data
+  redis_data:
+    driver: local
+    name: hiremind-redis-data
+  # pgadmin_data:
+  #   driver: local
+  #   name: hiremind-pgadmin-data
+
+# ==========================================
+# Networks
+# ==========================================
+networks:
+  hiremind-network:
+    driver: bridge
+    name: hiremind-network
